@@ -5,6 +5,10 @@ var _questionnaireContainer = require('../../app/services/QuestionnaireContainer
 
 describe('QuestionnaireContainer', () => {
 
+    test('Create Instance', () => {
+        expect(_questionnaireContainer).toBeDefined();
+    });
+
     test('Create Questionnaire', () => {
         expect(_questionnaireContainer.NumberOfQuestionnaire).toBe(0);
         let questionnaire = _questionnaireContainer.CreateQuestionnaire([]);
@@ -18,7 +22,6 @@ describe('QuestionnaireContainer', () => {
             _questionnaireContainer.CreateQuestionnaire([]);
 
         let expectID = _questionnaireContainer.NumberOfQuestionnaire - 1;
-
 
         let questionnaire = _questionnaireContainer.GetQuestionnaire(expectID);
         expect(questionnaire).toBeDefined();
