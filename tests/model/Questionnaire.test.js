@@ -11,6 +11,12 @@ describe('Questionnaire', () => {
         expect(questionnaire.NumberOfQuestion).toBe(0);
     });
 
+    test('Create Instance with undefined question', () => {
+        let questionnaire = new Questionnaire(undefined);
+        expect(questionnaire).toBeDefined();
+        expect(questionnaire.NumberOfQuestion).toBe(0);
+    });
+
     test('Create Instance with 3 questions', () => {
         let expectQuestions = [
             new Question('Title', ['Mr', 'Ms', 'Miss']),
@@ -52,7 +58,7 @@ describe('Questionnaire', () => {
         }
     });
 
-    test('Answer out of index', () => {
+    test('Answer (index is out of range)', () => {
         let expectQuestions = [
             new Question('Title', ['Mr', 'Ms', 'Miss']),
             new Question('First Name'),
@@ -65,5 +71,21 @@ describe('Questionnaire', () => {
         expect(questionnaire.NumberOfAnswer).toBe(0);
 
     });
+
+    test('GetAnswer (index is out of range)', () => {
+        let expectQuestions = [
+            new Question('Title', ['Mr', 'Ms', 'Miss']),
+            new Question('First Name'),
+            new Question('Last Name')
+        ];
+
+        let questionnaire = new Questionnaire(expectQuestions);
+        let result = questionnaire.SetAnswer(-1, '');
+        expect(result).toBeFalsy();
+        expect(questionnaire.NumberOfAnswer).toBe(0);
+        expect(questionnaire.GetAnswer(20)).toBeUndefined();
+
+    });
+
 
 });

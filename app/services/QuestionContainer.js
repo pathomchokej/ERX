@@ -43,7 +43,7 @@ class QuestionContainer {
 
     GetQuestionForBuildQuetionnaire() {
         let cloneQuestions = [];
-        for (i = 0; i < this.#_questions.length; i++)
+        for (let i = 0; i < this.#_questions.length; i++)
             cloneQuestions[i] = this.#_questions[i].Clone();
 
         return cloneQuestions;
@@ -51,4 +51,7 @@ class QuestionContainer {
 }
 
 const _instance = new QuestionContainer(); // singleton not create instance again
-module.exports = _instance;
+module.exports = {
+    Instance : _instance,
+    QuestionContainer : QuestionContainer
+}

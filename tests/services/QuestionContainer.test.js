@@ -1,4 +1,5 @@
-var _questionContainer = require('../../app/services/QuestionContainer');
+const QuestionContainerModule = require('../../app/services/QuestionContainer');
+let _questionContainer = new QuestionContainerModule.QuestionContainer;
 
 describe('QuestionContainer', () => {
 

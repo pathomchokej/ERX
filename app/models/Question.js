@@ -27,6 +27,10 @@ class Question {
     Clone(){
         return new Question(this.#_name, this.#_choices);
     }
+
+    toString(){
+        return this.#_name + ' : ' + this.#_choices.toString();
+    }
 }
 
 module.exports = {

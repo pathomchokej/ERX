@@ -3,7 +3,6 @@ let Questionnaire = QuestionnaireModule.Questionnaire;
 
 class QuestionnaireContainer {
     constructor() {
-        this.#_questionnaires = [];
     }
 
     #_questionnaires = [];
@@ -24,4 +23,7 @@ class QuestionnaireContainer {
 }
 
 const _instance = new QuestionnaireContainer(); // singleton not create instance again
-module.exports = _instance;
+module.exports = {
+    Instance : _instance,
+    QuestionnaireContainer : QuestionnaireContainer
+}

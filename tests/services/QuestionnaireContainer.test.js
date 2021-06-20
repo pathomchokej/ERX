@@ -1,7 +1,8 @@
 //const { test, expect } = require('@jest/globals');
 //const { describe } = require('yargs');
 // prevent to generate upper lines
-var _questionnaireContainer = require('../../app/services/QuestionnaireContainer')
+const QuestionnaireContainerModule = require('../../app/services/QuestionnaireContainer');
+let _questionnaireContainer = new QuestionnaireContainerModule.QuestionnaireContainer;
 
 describe('QuestionnaireContainer', () => {
 
