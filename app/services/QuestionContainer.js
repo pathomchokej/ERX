@@ -1,4 +1,4 @@
-let QuestionModule = require('../model/Question');
+let QuestionModule = require('../models/Question');
 let Question = QuestionModule.Question;
 
 class QuestionContainer {
@@ -17,10 +17,8 @@ class QuestionContainer {
         return (index >= 0 && index < this.NumberOfQuestion) ? this.#_questions[index] : undefined;
     }
 
-    AddQuestion(name, choice) {
-        let qName = name;
-        let qChoice = (choice != null && choice != undefined) ? [...choice] : [];
-        this.#_questions.push(new Question(qName, qChoice));
+    AddQuestion(name, choices) {
+        this.#_questions.push(new Question(name, choices));
         return this.NumberOfQuestion - 1;
     }
 
@@ -33,16 +31,22 @@ class QuestionContainer {
         return true;
     }
 
-    UpdateQuestion(index, name, choice) {
+    UpdateQuestion(index, name, choices) {
         let question = this.GetQuestion(index);
         if (undefined == question || null == question)
             return false;
 
-        let qName = name;
-        let qChoice = (choice != null && choice != undefined) ? [...choice] : [];
-        question.SetName(qName);
-        question.SetChoices(qChoice);
+        question.SetName(name);
+        question.SetChoices(choices);
         return true;
+    }
+
+    GetQuestionForBuildQuetionnaire() {
+        let cloneQuestions = [];
+        for (i = 0; i < this.#_questions.length; i++)
+            cloneQuestions[i] = this.#_questions[i].Clone();
+
+        return cloneQuestions;
     }
 }
 

@@ -9,12 +9,12 @@ describe('QuestionnaireContainer', () => {
         expect(_questionnaireContainer).toBeDefined();
     });
 
-    test('Create Questionnaire', () => {
+    test('Create Questionnaire with empty question', () => {
         expect(_questionnaireContainer.NumberOfQuestionnaire).toBe(0);
-        let questionnaire = _questionnaireContainer.CreateQuestionnaire([]);
+        let questionnaireIndex = _questionnaireContainer.CreateQuestionnaire([]);
+        let questionnaire = _questionnaireContainer.GetQuestionnaire(questionnaireIndex);
         expect(_questionnaireContainer.NumberOfQuestionnaire).toBe(1);
         expect(questionnaire).toBeDefined();
-        expect(questionnaire.ID).toBe(0);
     });
 
     test('GetQuestionnaire with existing ID', () => {
@@ -22,10 +22,8 @@ describe('QuestionnaireContainer', () => {
             _questionnaireContainer.CreateQuestionnaire([]);
 
         let expectID = _questionnaireContainer.NumberOfQuestionnaire - 1;
-
         let questionnaire = _questionnaireContainer.GetQuestionnaire(expectID);
         expect(questionnaire).toBeDefined();
-        expect(questionnaire.ID).toBe(expectID);
     });
 
     test('GetQuestionnaire with Unknown ID', () => {

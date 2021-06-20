@@ -195,6 +195,45 @@ describe('QuestionContainer', () => {
 
     });
 
+    test('Update Question from 5 choices to 3 choices', () => {
 
+        _questionContainer.AddQuestion('5Choice', ['a', 'b', 'c', 'd', 'e']);
+
+        let expectName = '3Choice';
+        let expectChoices = ['1', '2', '3'];
+        let updateIndex = _questionContainer.NumberOfQuestion - 1;
+        let isUpdated = _questionContainer.UpdateQuestion(updateIndex, expectName, expectChoices);
+        expect(isUpdated).toBeTruthy();
+
+        let question = _questionContainer.GetQuestion(updateIndex);
+        expect(question).toBeDefined();
+        expect(question.Name).toBe(expectName);
+        expect(question.Choices).toBeDefined();
+        expect(question.Choices.length).toBe(expectChoices.length);
+        for (i = 0; i < expectChoices.length; i++)
+            expect(question.Choices[i]).toBe(expectChoices[i]);
+
+    });
+
+
+    test('GetQuestionForBuildQuetionnaire', () => {
+
+        _questionContainer.AddQuestion('5Choice', ['a', 'b', 'c', 'd', 'e']);
+
+        let questions = _questionContainer.GetQuestionForBuildQuetionnaire();
+        expect(questions).toBeDefined();
+        expect(questions.length).toBe(_questionContainer.NumberOfQuestion);
+        for (i = 0; i < questions.length; i++) {
+            let sourceQuestion = _questionContainer.GetQuestion(i);
+            let cloneQuestion = questions[i];
+            expect(cloneQuestion).toBeDefined();
+            expect(cloneQuestion.Name).toBe(sourceQuestion.Name);
+            expect(cloneQuestion.Choices).toBeDefined();
+            expect(cloneQuestion.Choices.length).toBe(sourceQuestion.Choices.length);
+            for (choiceIndex = 0; choiceIndex < cloneQuestion.Choices.length; choiceIndex++)
+                expect(cloneQuestion.Choices[choiceIndex]).toBe(sourceQuestion.Choices[choiceIndex]);
+        }
+
+    });
 
 });

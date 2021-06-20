@@ -1,4 +1,4 @@
-let QuestionnaireModule = require('../model/Questionnaire');
+let QuestionnaireModule = require('../models/Questionnaire');
 let Questionnaire = QuestionnaireModule.Questionnaire;
 
 class QuestionnaireContainer {
@@ -13,13 +13,13 @@ class QuestionnaireContainer {
     }
 
     CreateQuestionnaire(questions) {
-        let questionnaire = new Questionnaire(this.NumberOfQuestionnaire);
+        let questionnaire = new Questionnaire(questions);
         this.#_questionnaires.push(questionnaire);
-        return questionnaire;
+        return this.#_questionnaires.length - 1;
     }
 
-    GetQuestionnaire(id) {
-        return (id >= 0 && id < this.NumberOfQuestionnaire) ? this.#_questionnaires[id] : undefined;
+    GetQuestionnaire(index) {
+        return (index >= 0 && index < this.NumberOfQuestionnaire) ? this.#_questionnaires[index] : undefined;
     }
 }
 

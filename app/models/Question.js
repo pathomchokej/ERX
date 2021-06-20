@@ -20,7 +20,12 @@ class Question {
     }
 
     SetChoices(newChoices){
-        this.#_choices = newChoices;
+        let choices = (newChoices != null && newChoices != undefined) ? [...newChoices] : [];
+        this.#_choices = choices;
+    }
+
+    Clone(){
+        return new Question(this.#_name, this.#_choices);
     }
 }
 
