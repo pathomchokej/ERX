@@ -59,15 +59,15 @@ class QuestionnaireController {
     GetNumberOfQuestion(questionnaireIndex) {
         let questionnaire = this.#_questionnaireContainer.GetQuestionnaire(questionnaireIndex);
         if (questionnaire == undefined)
-            return undefined;
-
-        return questionnaire.NumberOfQuestion;
+            return new QuestionnaireResultModule.QuestionnaireResult(QustionnaireFailed, 'Questionaire index is out of range');
+        else
+            return new QuestionnaireResultModule.QuestionnaireResult(QustionnaireSuccess, questionnaire.NumberOfQuestion);
     }
 
     GetQuestion(questionnaireIndex, questionIndex) {
         let questionnaire = this.#_questionnaireContainer.GetQuestionnaire(questionnaireIndex);
         if (questionnaire == undefined)
-        return new QuestionnaireResultModule.QuestionnaireResult(QustionnaireFailed, 'Questionaire index is out of range');
+            return new QuestionnaireResultModule.QuestionnaireResult(QustionnaireFailed, 'Questionaire index is out of range');
 
         let question = questionnaire.GetQuestion(questionIndex);
         if (undefined == question)
@@ -91,7 +91,7 @@ class QuestionnaireController {
     GetAnswer(questionnaireIndex, questionIndex) {
         let questionnaire = this.#_questionnaireContainer.GetQuestionnaire(questionnaireIndex);
         if (questionnaire == undefined)
-        return new QuestionnaireResultModule.QuestionnaireResult(QustionnaireFailed, 'Questionaire index is out of range');
+            return new QuestionnaireResultModule.QuestionnaireResult(QustionnaireFailed, 'Questionaire index is out of range');
 
         let answer = questionnaire.GetAnswer(questionIndex);
         if (undefined == answer)
@@ -104,7 +104,7 @@ class QuestionnaireController {
 const _instance = new QuestionnaireController(); // singleton not create instance again
 module.exports = {
     Instance: _instance,
-    QustionnaireSuccess : QustionnaireSuccess,
-    QustionnaireFailed : QustionnaireFailed,
-    QustionnaireFinish : QustionnaireFinish
+    QustionnaireSuccess: QustionnaireSuccess,
+    QustionnaireFailed: QustionnaireFailed,
+    QustionnaireFinish: QustionnaireFinish
 }

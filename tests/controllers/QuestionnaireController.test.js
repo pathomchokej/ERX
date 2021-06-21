@@ -54,7 +54,10 @@ describe('QuestionnaireController', () => {
             _controller.CreateQuestionnaire();
             
         let questionnaireIndex = _controller.NumberOfQuestionnaire - 1;
-        let numberOfQuestion = _controller.GetNumberOfQuestion(questionnaireIndex);
+        let result = _controller.GetNumberOfQuestion(questionnaireIndex);
+        expect(result).toBeDefined();
+        expect(result.Result).toBe(QuestionnaireControllerModule.QustionnaireSuccess);
+        let numberOfQuestion = result.Data;
         expect(numberOfQuestion).toBe(10);
     });
 
@@ -63,8 +66,9 @@ describe('QuestionnaireController', () => {
             _controller.CreateQuestionnaire();
             
         let questionnaireIndex = _controller.NumberOfQuestionnaire + 1;
-        let missingNumberOfQuestion = _controller.GetNumberOfQuestion(questionnaireIndex);
-        expect(missingNumberOfQuestion).toBeUndefined();
+        let result = _controller.GetNumberOfQuestion(questionnaireIndex);
+        expect(result).toBeDefined();
+        expect(result.Result).toBe(QuestionnaireControllerModule.QustionnaireFailed);
     });
 
     test('Set answer at last question', () => {
