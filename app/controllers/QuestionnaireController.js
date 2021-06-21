@@ -2,6 +2,11 @@ const QuestionContainerModule = require('../services/QuestionContainer');
 const QuestionnaireContainerModule = require('../services/QuestionnaireContainer');
 const CountryHelperModule = require('../helpers/CountryHelper');
 const OccupationHelperModule = require('../helpers/OccupationHelper');
+const QuestionnaireResultModule = require('../models/QuestionnaireResult');
+
+const QustionnaireSuccess = 'QUESTIONNAIRESUCCESS';
+const QustionnaireFailed = 'QUESTIONNAIREFAILED';
+const QustionnaireFinish = 'QUESTIONNAIREFINISH';
 
 class QuestionnaireController {
 
@@ -51,7 +56,7 @@ class QuestionnaireController {
         return questionnaireIndex;
     }
 
-    GetNumberOfQuestion(questionnaireIndex){
+    GetNumberOfQuestion(questionnaireIndex) {
         let questionnaire = this.#_questionnaireContainer.GetQuestionnaire(questionnaireIndex);
         if (questionnaire == undefined)
             return undefined;
@@ -59,24 +64,47 @@ class QuestionnaireController {
         return questionnaire.NumberOfQuestion;
     }
 
-    GetNumberOfAnswer(questionnaireIndex){
-        let questionnaire = this.#_questionnaireContainer.GetQuestionnaire(questionnaireIndex);
-        if (questionnaire == undefined)
-            return undefined;
-
-        return questionnaire.NumberOfAnswer;
-    }
-
     GetQuestion(questionnaireIndex, questionIndex) {
         let questionnaire = this.#_questionnaireContainer.GetQuestionnaire(questionnaireIndex);
         if (questionnaire == undefined)
-            return undefined;
+        return new QuestionnaireResultModule.QuestionnaireResult(QustionnaireFailed, 'Questionaire index is out of range');
 
-        return questionnaire.GetQuestion(questionIndex);
+        let question = questionnaire.GetQuestion(questionIndex);
+        if (undefined == question)
+            return new QuestionnaireResultModule.QuestionnaireResult(QustionnaireFailed, 'Question index is out of range');
+        else
+            return new QuestionnaireResultModule.QuestionnaireResult(QustionnaireSuccess, question);
+    }
+
+    SetAnswer(questionnaireIndex, questionIndex, answer) {
+        let questionnaire = this.#_questionnaireContainer.GetQuestionnaire(questionnaireIndex);
+        if (questionnaire == undefined)
+            return new QuestionnaireResultModule.QuestionnaireResult(QustionnaireFailed, 'Questionaire index is out of range');
+
+        let result = questionnaire.SetAnswer(questionIndex, answer);
+        if (!result)
+            return new QuestionnaireResultModule.QuestionnaireResult(QustionnaireFailed, 'Question index is out of range');
+        else
+            return new QuestionnaireResultModule.QuestionnaireResult(QustionnaireSuccess, undefined);
+    }
+
+    GetAnswer(questionnaireIndex, questionIndex) {
+        let questionnaire = this.#_questionnaireContainer.GetQuestionnaire(questionnaireIndex);
+        if (questionnaire == undefined)
+        return new QuestionnaireResultModule.QuestionnaireResult(QustionnaireFailed, 'Questionaire index is out of range');
+
+        let answer = questionnaire.GetAnswer(questionIndex);
+        if (undefined == answer)
+            return new QuestionnaireResultModule.QuestionnaireResult(QustionnaireFailed, 'Question index is out of range');
+        else
+            return new QuestionnaireResultModule.QuestionnaireResult(QustionnaireSuccess, answer);
     }
 }
 
 const _instance = new QuestionnaireController(); // singleton not create instance again
 module.exports = {
     Instance: _instance,
+    QustionnaireSuccess : QustionnaireSuccess,
+    QustionnaireFailed : QustionnaireFailed,
+    QustionnaireFinish : QustionnaireFinish
 }
