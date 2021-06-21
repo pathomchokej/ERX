@@ -3,6 +3,7 @@ const QuestionnaireContainerModule = require('../services/QuestionnaireContainer
 const CountryHelperModule = require('../helpers/CountryHelper');
 const OccupationHelperModule = require('../helpers/OccupationHelper');
 const QuestionnaireResultModule = require('../models/QuestionnaireResult');
+const FileStream = require('fs');
 
 const QustionnaireSuccess = 'QUESTIONNAIRESUCCESS';
 const QustionnaireFailed = 'QUESTIONNAIREFAILED';
@@ -54,6 +55,17 @@ class QuestionnaireController {
         let questions = this.#_questionContainer.GetQuestionForBuildQuetionnaire();
         let questionnaireIndex = this.#_questionnaireContainer.CreateQuestionnaire(questions);
         return questionnaireIndex;
+    }
+
+    GenerateCSV(questionnaireIndex) {
+        let questionnaire = this.#_questionnaireContainer.GetQuestionnaire(questionnaireIndex);
+        if (questionnaire == undefined)
+            return new QuestionnaireResultModule.QuestionnaireResult(QustionnaireFailed, 'Questionaire index is out of range');
+
+        let fileName = 'Questionnaire' + questionnaireIndex + '.csv';
+        let csvData = questionnaire.GetCsvData();
+        FileStream.writeFileSync(fileName, csvData);
+        return new QuestionnaireResultModule.QuestionnaireResult(QustionnaireSuccess, fileName);
     }
 
     GetNumberOfQuestion(questionnaireIndex) {

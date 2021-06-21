@@ -68,7 +68,7 @@ describe('Questionnaire', () => {
         let questionnaire = new Questionnaire(expectQuestions);
         let result = questionnaire.SetAnswer(questionnaire.NumberOfQuestion + 1, '');
         expect(result).toBeFalsy();
-        expect(questionnaire.NumberOfAnswer).toBe(0);
+        expect(questionnaire.NumberOfAnswer).toBe(questionnaire.NumberOfQuestion);
 
     });
 
@@ -82,10 +82,42 @@ describe('Questionnaire', () => {
         let questionnaire = new Questionnaire(expectQuestions);
         let result = questionnaire.SetAnswer(-1, '');
         expect(result).toBeFalsy();
-        expect(questionnaire.NumberOfAnswer).toBe(0);
+        expect(questionnaire.NumberOfAnswer).toBe(questionnaire.NumberOfQuestion);
         expect(questionnaire.GetAnswer(20)).toBeUndefined();
 
     });
 
+    test('GetCSVData with all data filled', () => {
+        let expectQuestions = [
+            new Question('Title', ['Mr', 'Ms', 'Miss']),
+            new Question('First Name'),
+            new Question('Last Name')
+        ];
+        let expectAnswer = ['Mr', 'P', 'Jr'];
+        let expectCSV = 'Title,Mr\nFirst Name,P\nLast Name,Jr\n';
+
+        let questionnaire = new Questionnaire(expectQuestions);
+        for (i = 0; i < questionnaire.NumberOfQuestion; i++) {
+            let result = questionnaire.SetAnswer(i, expectAnswer[i]);
+        }
+
+        let csv = questionnaire.GetCsvData();
+        expect(csv).toBe(expectCSV);
+    });
+
+    test('GetCSVData with any data is empty', () => {
+        let expectQuestions = [
+            new Question('Title', ['Mr', 'Ms', 'Miss']),
+            new Question('First Name'),
+            new Question('Last Name')
+        ];
+        let expectCSV = 'Title,\nFirst Name,P\nLast Name,\n';
+
+        let questionnaire = new Questionnaire(expectQuestions);
+        questionnaire.SetAnswer(1, 'P');
+
+        let csv = questionnaire.GetCsvData();
+        expect(csv).toBe(expectCSV);
+    });
 
 });

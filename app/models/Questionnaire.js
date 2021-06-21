@@ -14,6 +14,9 @@ class Questionnaire {
     constructor(questions) {
         let validateQuestions = (questions != null && questions != undefined) ? [...questions] : [];
         this.#_questions = validateQuestions;
+        for (let i = 0; i < this.NumberOfQuestion; i++) {
+            this.#_answers[i] = undefined;
+        }
     }
 
     GetQuestion(index) {
@@ -28,8 +31,19 @@ class Questionnaire {
         return true;
     }
 
-    GetAnswer(index){
+    GetAnswer(index) {
         return (index >= 0 && index < this.NumberOfAnswer) ? this.#_answers[index] : undefined;
+    }
+
+    GetCsvData() {
+        let csvInfo = ''
+        for (let i = 0; i < this.NumberOfQuestion; i++) {
+            csvInfo += this.#_questions[i].Name + ',';
+            if (this.#_answers[i] != undefined && this.#_answers[i] != null)
+                csvInfo += this.#_answers[i];
+            csvInfo += '\n';
+        }
+        return csvInfo;
     }
 }
 

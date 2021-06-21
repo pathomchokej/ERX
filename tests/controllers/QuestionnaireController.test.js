@@ -131,4 +131,25 @@ describe('QuestionnaireController', () => {
         expect(result.Result).toBe(QuestionnaireControllerModule.QustionnaireFailed);
     });
 
+    test('GenerateCSV', () => {
+        if (_controller.NumberOfQuestionnaire <= 0)
+            _controller.CreateQuestionnaire();
+            
+        let questionnaireIndex = _controller.NumberOfQuestionnaire - 1;
+        let expectFileName = 'Questionnaire' + questionnaireIndex + '.csv';
+        let result = _controller.GenerateCSV(questionnaireIndex);
+        expect(result).toBeDefined();
+        expect(result.Result).toBe(QuestionnaireControllerModule.QustionnaireSuccess);
+        expect(result.Data).toBe(expectFileName);
+    });
+
+    test('Get Number of Question (questionnaire index is out of range)', () => {
+        if (_controller.NumberOfQuestionnaire <= 0)
+            _controller.CreateQuestionnaire();
+            
+        let questionnaireIndex = _controller.NumberOfQuestionnaire + 1;
+        let result = _controller.GenerateCSV(questionnaireIndex);
+        expect(result).toBeDefined();
+        expect(result.Result).toBe(QuestionnaireControllerModule.QustionnaireFailed);
+    });
 });
